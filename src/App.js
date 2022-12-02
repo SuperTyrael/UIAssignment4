@@ -144,8 +144,8 @@ function FilterTable() {
             }
             />
           </FormControl>
-          <Typography align="left" gutterBottom variant="h5" component="div">
-            {`Total of Favorites: $${total()}`}
+          <Typography align="left" gutterBottom variant="h6" component="div">
+            {`Total of Favorites: $${total().toFixed(2)}`}
           </Typography>
 
 
