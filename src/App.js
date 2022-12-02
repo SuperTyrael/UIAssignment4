@@ -1,6 +1,6 @@
 import './App.css';
 import * as React from 'react';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox, FormGroup, Grid, Stack } from '@mui/material';
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox, FormGroup, Grid, Stack, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import BakeryItems from './BakeryItem';
 import bakeryData from "./assets/bakery-data.json";
@@ -26,15 +26,22 @@ function FilterTable() {
   const [type, setType] = useState("all");
   const [dietary, setDietary] = useState("all");
   const [fav, setFav] = useState([]);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
+  const total = () => { 
+    let sum = 0;
+    fav.forEach((item) => {
+      sum += item.price;
+    });
+    return sum;
+  };
   
-  function addFav(id) {
+  function addFav(favItem) {
 
-    if (id in fav) return;
-      setFav([...fav, id]);
+    if (favItem in fav) return;
+      setFav([...fav, favItem]);
   }
-  function deleteFav(id){
-    setFav(fav.filter((item) => item !== id));
+  function deleteFav(favItem){
+    setFav(fav.filter((item) => item !== favItem));
   }
 
   const sortFilter = (a,b) => {
@@ -48,14 +55,28 @@ function FilterTable() {
   }
 
   const typeFilter = (item) => {
-    if (type == "all" && dietary == "all") {
-      return true;
-    } else if (type == "all") {
-      return item.dietaryRestrictions == dietary;
-    } else if (dietary == "all") {
-      return item.type == type;
+    if (checked === false) { 
+      if (type === "all" && dietary === "all") {
+        return true;
+      } else if (type == "all" ) {
+        return item.dietaryRestrictions === dietary;
+      } else if (dietary === "all" ) {
+        return item.type === type;
+      } else {
+        return item.type === type && item.dietaryRestrictions === dietary;
+      }
     } else {
-      return item.type == type && item.dietaryRestrictions == dietary;
+      if (fav.indexOf(item) !== -1) {
+        if (type === "all" && dietary === "all") {
+          return true;
+        } else if (type === "all") {
+          return item.dietaryRestrictions === dietary;
+        } else if (dietary === "all" ) {
+          return item.type === type;
+        } else {
+          return item.type === type && item.dietaryRestrictions === dietary;
+        }
+      }
     }
   }
     
@@ -123,6 +144,9 @@ function FilterTable() {
             }
             />
           </FormControl>
+          <Typography align="left" gutterBottom variant="h5" component="div">
+            {`Total: $${total()}`}
+          </Typography>
 
 
         </Stack>
