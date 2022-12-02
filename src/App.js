@@ -4,7 +4,6 @@ import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox, 
 import { useState, useEffect } from 'react';
 import BakeryItems from './BakeryItem';
 import bakeryData from "./assets/bakery-data.json";
-import { Form } from 'antd';
 
 bakeryData.forEach((item) => {
   item.image = process.env.PUBLIC_URL + "/" + item.image;
